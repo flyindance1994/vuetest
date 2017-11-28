@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const app = {
+const user = {
     state: {
         email: '',
         token: localStorage.getItem('token')
@@ -17,4 +17,4 @@ const app = {
     }
 };
 
-export default app;
+export default user;
