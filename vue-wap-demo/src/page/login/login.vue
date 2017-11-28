@@ -60,74 +60,91 @@
 </template>
 
 <script>
-  import alertTip from '@/components/common/alertTip'
-  import {accountLogin} from '@/service/getData'
-  import { mapMutations } from 'vuex'
+import alertTip from "@/components/common/alertTip";
+import { accountLogin } from "@/service/getData";
+import { mapMutations } from "vuex";
 
-  export default {
-    data() {
-      return {
-        wHeight: 0,
-        userAccount: "admin@fusio.com.cn",
-        passWord: "123456",
-        showPassword: false,
-        showAlert: false,
-        alertText: "",
+export default {
+  data() {
+    return {
+      wHeight: 0,
+      userAccount: "admin@fusio.com.cn",
+      passWord: "123456",
+      showPassword: false,
+      showAlert: false,
+      alertText: ""
+    };
+  },
+  components: {
+    alertTip
+  },
+  mounted() {
+    this.wHeight =
+      document.documentElement.clientHeight || document.body.clientHeight;
+  },
+  methods: {
+    changePassWordType() {
+      this.showPassword = !this.showPassword;
+    },
+    async loginSubmit() {
+      if (!this.userAccount) {
+        this.showAlert = true;
+        this.alertText = "请输入手机号/邮箱/用户名";
+        return;
+      } else if (!this.passWord) {
+        this.showAlert = true;
+        this.alertText = "请输入密码";
+        return;
+      }
+      //用户名登录
+      console.log(this.userAccount);
+      console.log(this.passWord);
+
+      // 哈咯，各位阅读文章的小伙伴，
+      // 登录接口由于业务调整已经暂停，
+      // 做到这里，可以注释，暂时当请求返回成功处理。
+      // 晚些更新接口后，会再次更新文章内容。
+      // 造成不便，十分抱歉。
+
+      // 暂时注释
+      // let response = await accountLogin(this.userAccount, this.passWord);
+      // 开启这个模拟登录成功
+      let response = {
+        retCode: "10000",
+        msg: "请求成功",
+        data: {
+          adminInfo:{
+            email:"admin@fusio.com.cn"
+          },
+          tokenModel:{
+            token:"123126473216213"
+          }
+        }
+      };
+
+      //如果返回的值不正确，则弹出提示框，返回的值正确则返回上一页
+      if (response.retCode != "10000") {
+        this.showAlert = true;
+        this.alertText = response;
+      } else {
+        // 缓存用户数据（等下处理）
+        let email = response.data.adminInfo.email;
+        let token = response.data.tokenModel.token;
+        this.$store.commit("SET_AUTH_INFO", [
+          {
+            email: email,
+            token: token
+          }
+        ]);
+        // 跳转到消息列表页
+        this.$router.push({ path: "/messages" });
       }
     },
-    components: {
-      alertTip,
-    },
-    mounted() {
-      this.wHeight = document.documentElement.clientHeight || document.body.clientHeight;
-    },
-    methods: {
-      changePassWordType() {
-        this.showPassword = !this.showPassword;
-      },
-      async loginSubmit() {
-        if (!this.userAccount) {
-          this.showAlert = true;
-          this.alertText = '请输入手机号/邮箱/用户名';
-          return
-        }else if(!this.passWord){
-          this.showAlert = true;
-          this.alertText = '请输入密码';
-          return
-        }
-        //用户名登录
-        console.log(this.userAccount);
-        console.log(this.passWord);
-
-        // 哈咯，各位阅读文章的小伙伴，
-        // 登录接口由于业务调整已经暂停，
-        // 做到这里，可以注释，暂时当请求返回成功处理。
-        // 晚些更新接口后，会再次更新文章内容。
-        // 造成不便，十分抱歉。
-
-        // 暂时注释
-        // let response = await accountLogin(this.userAccount, this.passWord);
-        // 开启这个模拟登录成功
-        let response = { retCode: "10000", msg: "请求成功", data: {}  };
-
-
-        //如果返回的值不正确，则弹出提示框，返回的值正确则返回上一页
-        if (response.retCode!="10000") {
-          this.showAlert = true;
-          this.alertText = response;        
-        }else{
-          // 缓存用户数据（等下处理）
-          // ...
-          // 跳转到消息列表页
-          this.$router.push({ path: '/messages' });
-        }
-      },
-      closeTip() {
-        this.showAlert = false;
-      },
+    closeTip() {
+      this.showAlert = false;
     }
   }
-
+};
 </script>
 
 <style lang="scss" scoped>
@@ -143,31 +160,31 @@
     }
   }
   .login_form {
-    .input_container{
+    .input_container {
       display: flex;
       justify-content: space-between;
-      padding: .6rem .8rem;
+      padding: 0.6rem 0.8rem;
       background-color: #fff;
       border-bottom: 1px solid #f1f1f1;
-      input{
+      input {
         font-size: 0.7rem;
         color: #666;
         width: 100%;
       }
-      button{
+      button {
         font-size: 0.65rem;
         color: #fff;
-        font-family: Helvetica Neue,Tahoma,Arial;
-        padding: .28rem .4rem;
+        font-family: Helvetica Neue, Tahoma, Arial;
+        padding: 0.28rem 0.4rem;
         border: 1px;
         border-radius: 0.15rem;
       }
-      .right_phone_number{
+      .right_phone_number {
         background-color: #4cd964;
       }
     }
   }
-  .btn_switch{
+  .btn_switch {
     background-color: #ccc;
     display: flex;
     justify-content: center;
@@ -177,28 +194,28 @@
     border: 1px;
     border-radius: 0.5rem;
     position: relative;
-    .btn_switch_circel{
-      transition: all .3s;
+    .btn_switch_circel {
+      transition: all 0.3s;
       position: absolute;
       top: -0.1rem;
       left: -0.2rem;
       z-index: 1;
       width: 1.24rem;
       height: 1.24rem;
-      box-shadow: 0 0.03rem 0.05rem 0 rgba(0,0,0,.1);
+      box-shadow: 0 0.03rem 0.05rem 0 rgba(0, 0, 0, 0.1);
       background-color: #5cacf9;
       border-radius: 50%;
       cursor: pointer;
     }
-    .trans_to_right{
+    .trans_to_right {
       transform: translateX(1.4rem);
     }
-    span{
+    span {
       font-size: 0.4rem;
       line-height: 1rem;
       color: #fff;
     }
-    span:nth-of-type(2){
+    span:nth-of-type(2) {
       transform: translateY(0.08rem);
     }
   }
