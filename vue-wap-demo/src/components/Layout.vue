@@ -1,49 +1,40 @@
 <template>
   <div class="app_wrapper" :class="{hideSidebar:sidebar}">
     <!-- head -->
-    <head-top @toggleSideBar="toggleSideBar"></head-top>
+    <!-- <head-top @toggleSideBar="toggleSideBar"></head-top> -->
     <!-- sidebar -->
     <sidebar></sidebar>
     <!-- masking -->
     <masking></masking>
     <!-- footer -->
-    <foot-menu :activeIndex="0"></foot-menu>
-    <!-- backtotop -->
-    <back-to-top></back-to-top>
+    <!-- <foot-menu :activeIndex="0"></foot-menu> -->
     <!-- main -->
-    <div class="main_wrapper">
-      <img src="../assets/logo.png">
-      <h1 class="title">{{msg}}</h1>
-    </div>
+    <router-view></router-view>
+     <!-- backtotop -->
+    <back-to-top></back-to-top>
   </div>
 </template>
 
 <script>
-import headTop from "./header/head";
+import { mapGetters } from 'vuex';
+// import headTop from "./header/head";
 import sidebar from "./sidebar/sidebar";
 import masking from "./masking/masking";
-import footMenu from '@/components/footer/footer';
+// import footMenu from './footer/footer';
 import backToTop from './common/backToTop'
 export default {
   components: {
-    headTop,
+    // headTop,
     sidebar,
     masking,
-    footMenu,
+    // footMenu,
     backToTop
   },
-  data() {
-    return {
-      sidebar: false,
-      msg: "Welcome to Your Vue.js App"
-    };
+  computed:{
+    ...mapGetters([
+      'sidebar',
+    ])
   },
-  methods: {
-    toggleSideBar() {
-      this.sidebar = !this.sidebar;
-      console.log("sidebar current value: " + this.sidebar);
-    }
-  }
 };
 </script>
 

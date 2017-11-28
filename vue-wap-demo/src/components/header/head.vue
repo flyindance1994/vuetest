@@ -10,10 +10,8 @@
 <script>
 export default {
   methods: {
-    toggleSiderBar() {
-      // this.sidebar = !this.sidebar;
-      // console.log("siderbar current value:" + this.sidebar);
-      this.$emit('toggleSideBar');
+    toggleSideBar() {
+      this.$store.dispatch('ToggleSideBar');
     }
   }
 };
