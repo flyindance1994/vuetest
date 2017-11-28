@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 // import headTop from "./header/head";
 import sidebar from "./sidebar/sidebar";
 import masking from "./masking/masking";
 // import footMenu from './footer/footer';
-import backToTop from './common/backToTop'
+import backToTop from "./common/backToTop";
 export default {
   components: {
     // headTop,
@@ -30,11 +30,14 @@ export default {
     // footMenu,
     backToTop
   },
-  computed:{
-    ...mapGetters([
-      'sidebar',
-    ])
+  mounted() {
+    window.onscroll = () => {
+      this.$store.dispatch("SetScroll");
+    };
   },
+  computed: {
+    ...mapGetters(["sidebar"])
+  }
 };
 </script>
 
