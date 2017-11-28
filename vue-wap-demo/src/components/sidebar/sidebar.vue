@@ -34,7 +34,7 @@ export default {
     handleSidebar(name) {
       // 暂时不要管这里，后面你可以留意下
       // 作用就是改变侧边菜单状态，并存储进仓库
-      // this.$store.dispatch('ToggleSideBar');
+      this.$store.dispatch('ToggleSideBar');
       this.$router.push({ path: "/" + name });
     }
   }

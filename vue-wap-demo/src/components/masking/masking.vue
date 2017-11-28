@@ -7,7 +7,7 @@
     methods: {
       toggleSideBar() {
         //暂时先注释，后面store之后那步再打开
-        // this.$store.dispatch('ToggleSideBar');
+        this.$store.dispatch('ToggleSideBar');
       },
     },
   }

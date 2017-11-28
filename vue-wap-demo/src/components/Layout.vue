@@ -6,6 +6,8 @@
     <sidebar></sidebar>
     <!-- masking -->
     <masking></masking>
+    <!-- footer -->
+    <foot-menu :activeIndex="0"></foot-menu>
     <!-- main -->
     <div class="main_wrapper">
       <img src="../assets/logo.png">
@@ -18,11 +20,13 @@
 import headTop from "./header/head";
 import sidebar from "./sidebar/sidebar";
 import masking from "./masking/masking";
+import footer from "./footer/footer";
 export default {
   components: {
     headTop,
     sidebar,
-    masking
+    masking,
+    footer
   },
   data() {
     return {
@@ -61,6 +65,11 @@ export default {
     transform: translateX(13rem);
   }
 
+  .footer {
+    transition: all 0.28s ease-out;
+    transform: translateX(13rem);
+  }
+
   &.hideSidebar {
     .header {
       transform: translateX(0);
@@ -72,6 +81,9 @@ export default {
       display: none;
     }
     .main_wrapper {
+      transform: translateX(0);
+    }
+    .footer {
       transform: translateX(0);
     }
   }
