@@ -4,6 +4,8 @@
     <head-top></head-top>
     <!-- sidebar -->
     <sidebar></sidebar>
+    <!-- masking -->
+    <masking></masking>
     <!-- main -->
     <div class="main_wrapper">
       <img src="../assets/logo.png">
@@ -15,21 +17,31 @@
 <script>
 import headTop from "./header/head";
 import sidebar from "./sidebar/sidebar";
+import masking from "./masking/masking";
 export default {
   components: {
     headTop,
-    sidebar
+    sidebar,
+    masking
   },
   data() {
     return {
+      sidebar: false,
       msg: "Welcome to Your Vue.js App"
     };
+  },
+  methods: {
+    toggleSideBar() {
+      this.sidebar = !this.sidebar;
+      console.log("sidebar current value: " + this.sidebar);
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+/*layout*/
 /*layout*/
 .app_wrapper {
   overflow-x: hidden;
@@ -55,6 +67,9 @@ export default {
     }
     .sidebar {
       transform: translateX(-13rem);
+    }
+    .masking {
+      display: none;
     }
     .main_wrapper {
       transform: translateX(0);
