@@ -1,13 +1,15 @@
 <template>
-  <div class="app_wrapper">
+  <div class="app_wrapper" :class="{hideSidebar:sidebar}">
     <!-- head -->
-    <head-top></head-top>
+    <head-top @toggleSideBar="toggleSideBar"></head-top>
     <!-- sidebar -->
     <sidebar></sidebar>
     <!-- masking -->
     <masking></masking>
     <!-- footer -->
     <foot-menu :activeIndex="0"></foot-menu>
+    <!-- backtotop -->
+    <back-to-top></back-to-top>
     <!-- main -->
     <div class="main_wrapper">
       <img src="../assets/logo.png">
@@ -20,13 +22,15 @@
 import headTop from "./header/head";
 import sidebar from "./sidebar/sidebar";
 import masking from "./masking/masking";
-import footer from "./footer/footer";
+import footMenu from '@/components/footer/footer';
+import backToTop from './common/backToTop'
 export default {
   components: {
     headTop,
     sidebar,
     masking,
-    footer
+    footMenu,
+    backToTop
   },
   data() {
     return {
