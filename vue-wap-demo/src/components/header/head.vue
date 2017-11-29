@@ -1,17 +1,31 @@
 <template>
     <header class="header">
-        <span class="head_toggle" @click="toggleSideBar">
-            <img class="top_image" src="https://cn.bing.com/az/hprichbg/rb/GreatSaltLake_ZH-CN12553220159_1920x1080.jpg"/>
+        <span v-if="toggleBtn!=false" class="head_toggle" @click="toggleSideBar">
+          <img class="top_image" src="https://cn.bing.com/az/hprichbg/rb/GreatSaltLake_ZH-CN12553220159_1920x1080.jpg"/>
         </span>
-        <span class="head_logo">logo</span>
+        <slot name='head_text'>
+          <!-- <span class="head_text">LOGO</span> -->
+        </slot>
+        <slot name='head_subtext'>
+        <!-- <span class="head_subtext">iPhone在线 - WiFi</span> -->
+        </slot>
+        <slot name='head_btn'>
+        <!-- <span class="head_btn"><i class="iconfont icon-tianjia"></i></span> -->
+        </slot>
+        <slot name='head_back'>
+        <!-- <span class="head_back"><i class="iconfont icon-fanhui"></i>动态</span> -->
+        </slot>
+        <slot name='head_input'>
+        </slot>
     </header>
 </template>
 
 <script>
 export default {
+  props: ["toggleBtn", "signinUp", "headTitle", "goBack"],
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar');
+      this.$store.dispatch("ToggleSideBar");
     }
   }
 };
@@ -65,6 +79,78 @@ export default {
     font-size: 0.7rem;
     color: #fff;
     display: inline-block;
+    &.subtext {
+      line-height: 1.5rem;
+    }
+  }
+  .head_subtext {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.3rem;
+    line-height: 1rem;
+    color: #fff;
+  }
+  /*右侧按钮*/
+  .head_btn {
+    position: absolute;
+    right: 0.5rem;
+    line-height: 1.95rem;
+    font-size: 0.7rem;
+    color: #fff;
+    a {
+      color: #fff;
+    }
+    i {
+      line-height: 1.95rem;
+      font-size: 0.7rem;
+      color: #fff;
+    }
+  }
+  /*返回按钮*/
+  .head_back {
+    position: absolute;
+    left: 0.5rem;
+    line-height: 1.95rem;
+    font-size: 0.7rem;
+    color: #fff;
+    a {
+      color: #fff;
+    }
+    i {
+      line-height: 1.95rem;
+      font-size: 0.7rem;
+      color: #fff;
+    }
+  }
+  .search {
+    padding: 0.5rem 2.4rem 0.5rem 0.5rem;
+    .search_content {
+      position: relative;
+      padding: 0 0.3rem;
+      text-align: left;
+      font-size: 0.5rem;
+      line-height: 2;
+      border-radius: 0.1rem;
+      color: #999;
+      background-color: #eee;
+      i {
+        position: absolute;
+        left: 0.3rem;
+        font-size: 0.5rem;
+        color: #999;
+        margin-right: 0.43em;
+      }
+      input {
+        background-color: transparent;
+        width: 100%;
+        padding-left: 0.8rem;
+        line-height: 1rem;
+        font-size: 0.5rem;
+      }
+    }
   }
 }
 </style>

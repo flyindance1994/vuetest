@@ -109,7 +109,7 @@
 </script>
 
 <style lang="scss" scoped>
- .container {
+	.container {
     margin-bottom: 1.95rem;
     background-color: #f5f5f5;
   }
@@ -167,4 +167,5 @@
       }
     }
   }
+  
 </style>
