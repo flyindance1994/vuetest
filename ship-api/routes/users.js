@@ -35,7 +35,6 @@ router.get('/getorders', function (req, res, next) {
           data: result
         }
       }
-      logger.info(result);
       responseJSON(res, result);
 
       connection.release();

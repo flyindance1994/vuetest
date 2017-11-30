@@ -8,18 +8,16 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
+const log4js= require('./logs/logconfig')
+const loggerms = log4js.getLogger()//根据需要获取logger
+const errlogger = log4js.getLogger('err')
+const othlogger = log4js.getLogger('oth')
+
 var app = express();
-
-let log4js = require('log4js');
-let logconfig = require('./logs/logconfig');
-
-
-log4js.configure(logconfig.config);
-let log4 = log4js.getLogger('normal');
-
+log4js.useLogger(app,loggerms)
 // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
