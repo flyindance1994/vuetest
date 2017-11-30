@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "_vue@2.5.9@vue": "^2.5.9",
+    "log4js": "^2.3.12",
     "vue": "^2.5.9"
   },
   "devDependencies": {},
