@@ -16,8 +16,7 @@ let logconfig = require('./logs/logconfig');
 
 log4js.configure(logconfig.config);
 let log4 = log4js.getLogger('normal');
-log4.setLevel('INFO');
-app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO }));
+
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
