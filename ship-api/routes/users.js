@@ -18,28 +18,108 @@ let responseJSON = function (res, ret) {
   }
 }
 
-/* GET users listing. */
-router.get('/getorders', function (req, res, next) {
-  pool.getConnection(function (err, connection) {
-    if (err) {
-      throw err;
-    }
-    connection.query(orderSQL.queryLimit, [6], function (err, result) {
-      if (err) {
-        throw err;
-      }
-      if (result) {
-        result = {
-          code: 200,
-          msg: '查询成功',
-          data: result
-        }
-      }
-      responseJSON(res, result);
+const MAX_DISH = 16;
 
-      connection.release();
+let queryOrder = function () {
+  return new Promise(function (resolve, reject) {
+    pool.getConnection(function (err, connection) {
+      connection.query(orderSQL.queryLimit, [6], function (err, orders) {
+        if (err) {
+          throw err;
+        }
+        if (orders) {
+          resolve(orders);
+          connection.release();
+        }
+      });
     });
   });
+};
+
+let queryOrderInfo = function (orderids) {
+  return new Promise(function (resolve, reject) {
+    pool.getConnection(function (err, connection) {
+      connection.query(orderSQL.queryInfo, orderids, function (err, dishes) {
+        if (err) {
+          throw err;
+        }
+        if (dishes) {
+          resolve(dishes);
+          connection.release();
+        }
+      });
+    });
+  });
+};
+
+let queryOrderRelish = function (infoids) {
+  return new Promise(function (resolve, reject) {
+    pool.getConnection(function (err, connection) {
+      connection.query(orderSQL.queryRelish, infoids, function (err, relish) {
+        if (err) {
+          throw err;
+        }
+        if (relish) {
+          resolve(relish);
+          connection.release();
+        }
+      })
+    });
+  });
+}
+
+let query = async function () {
+  let orders = await queryOrder();
+  let orderids = Array();
+  orders.forEach(order => {
+    orderids.push(order.id);
+  });
+  orderids = orderids.join(',')
+  let orderinfo = await queryOrderInfo(orderids);
+  console.log(orderinfo);
+
+}
+
+/* GET users listing. */
+router.get('/getorders', function (req, res, next) {
+  query();
+
+
+  // pool.getConnection(function (err, connection) {
+  //   if (err) {
+  //     throw err;
+  //   }
+
+  // connection.query(orderSQL.queryLimit, [6], function (err, orders) {
+  //   if (err) {
+  //     throw err;
+  //   }
+  //   if (orders) {
+  //     orders.forEach(order => {
+  //       connection.query(orderSQL.queryInfo, [order.id], function (err, dishes) {
+  //         if (err) {
+  //           throw err;
+  //         }
+  //         if (dishes) {
+  //           dishes.forEach(dish => {
+  //             connection.query(orderSQL.queryRelish, [dish.id], function (err, relish) {
+  //               if (err) {
+  //                 throw err;
+  //               }
+  //               if (relish) {
+  //                 dish['relish'] = relish;
+  //               }
+  //             });
+  //           });
+  //         }
+  //         order['order_info'] = dishes;
+  //       });
+  //     });
+  //   }
+  //   responseJSON(res, orders);
+  //   connection.release();
+  // });
+  // });
 });
 
 module.exports = router;
