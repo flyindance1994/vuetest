@@ -70,13 +70,22 @@ let queryOrderRelish = function (infoids) {
 
 let query = async function () {
   let orders = await queryOrder();
+
   let orderids = Array();
   orders.forEach(order => {
     orderids.push(order.id);
   });
   orderids = orderids.join(',')
   let orderinfo = await queryOrderInfo(orderids);
-  console.log(orderinfo);
+  
+  let infoids = Array();
+  orderinfo.forEach(info=>{
+    infoids.push(info.id);
+  })
+  infoids = infoids.join(',');
+  let orderrelish = await queryOrderRelish(infoids);
+
+  
 
 }
 
