@@ -68,7 +68,7 @@ let queryOrderRelish = function (infoids) {
   });
 }
 
-let query = async function () {
+let query = async function (req, res, next) {
   let orders = await queryOrder();
 
   let orderids = Array();
@@ -77,58 +77,38 @@ let query = async function () {
   });
   orderids = orderids.join(',')
   let orderinfo = await queryOrderInfo(orderids);
-  
+
   let infoids = Array();
-  orderinfo.forEach(info=>{
+  orderinfo.forEach(info => {
     infoids.push(info.id);
   })
   infoids = infoids.join(',');
   let orderrelish = await queryOrderRelish(infoids);
 
-  
+  orderinfo.forEach(info => {
+    info.relish = Array();
+    orderrelish.forEach(relish => {
+      if (info.id == relish.info_id) {
+        info.relish.push(relish);
+      }
+    })
+  })
 
+  orders.forEach(order => {
+    order.infos = Array();
+    orderinfo.forEach(info => {
+      if (info.order_id == order.id) {
+        order.infos.push(info);
+      }
+    });
+  })
+
+  res.json({data:orders});
 }
 
 /* GET users listing. */
 router.get('/getorders', function (req, res, next) {
-  query();
-
-
-  // pool.getConnection(function (err, connection) {
-  //   if (err) {
-  //     throw err;
-  //   }
-
-  // connection.query(orderSQL.queryLimit, [6], function (err, orders) {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   if (orders) {
-  //     orders.forEach(order => {
-  //       connection.query(orderSQL.queryInfo, [order.id], function (err, dishes) {
-  //         if (err) {
-  //           throw err;
-  //         }
-  //         if (dishes) {
-  //           dishes.forEach(dish => {
-  //             connection.query(orderSQL.queryRelish, [dish.id], function (err, relish) {
-  //               if (err) {
-  //                 throw err;
-  //               }
-  //               if (relish) {
-  //                 dish['relish'] = relish;
-  //               }
-  //             });
-  //           });
-  //         }
-  //         order['order_info'] = dishes;
-  //       });
-  //     });
-  //   }
-  //   responseJSON(res, orders);
-  //   connection.release();
-  // });
-  // });
+  let orders = query(req, res, next);
 });
 
 module.exports = router;
