@@ -77,6 +77,22 @@ let queryOrderRelish = function (infoids) {
   });
 }
 
+let queryCheckStatu = function (id) {
+  return new Promise(function (resolve, reject) {
+    pool.getConnection(function (err, connection) {
+      connection.query(orderSQL.queryCheckStatu, id, function (err, statu) {
+        if (err) {
+          throw err;
+        }
+        if (statu) {
+          resolve(statu);
+          connection.release();
+        }
+      })
+    })
+  })
+}
+
 let query = async function (req, res, next) {
   let orders = await queryOrder();
 
@@ -130,12 +146,33 @@ let query = async function (req, res, next) {
       let cache_orders = req.session.orders;
       req.session.orders = orders;
 
-      cache_orders.forEach(cache=>{
-        console.log(cache);
+      cache_orders.forEach(cache => {
+        if (orders.indexOf(cache) == -1) {
+          let statu = await queryCheckStatu(cache.id);
+          if (statu == 1) {
+            cache.over = "已完成";
+          }
+        }
       })
+
+      orders = cache_orders;
     }
-  }else{
+  } else {
     req.session.orders = orders;
+  }
+
+  let list = Array();
+  let dish_length = orders.length;
+  let dish_length_back = dish_length + 1;
+
+  let continuenum = 0;
+
+  while(dish_length_back--){
+    if(dish_length - dish_length_back - continuenum >= orders.length){
+      break;
+    }
+
+    
   }
 
   res.json({ data: orders });
