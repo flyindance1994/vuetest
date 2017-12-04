@@ -12,9 +12,16 @@ const log4js= require('./logs/logconfig')
 const loggerms = log4js.getLogger()//根据需要获取logger
 const errlogger = log4js.getLogger('err')
 const othlogger = log4js.getLogger('oth')
+let session = require('express-session');
 
 var app = express();
 log4js.useLogger(app,loggerms)
+app.use(cookieParser('sessionorder'));
+app.use(session({
+  secret: 'sessionorder',
+  resave: true,
+  saveUninitialized:true
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

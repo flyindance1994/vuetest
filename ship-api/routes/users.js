@@ -7,6 +7,10 @@ let orderSQL = require('../db/ordersql');
 
 let pool = mysql.createPool(dbConfig.mysql);
 
+let cookieParse = require('cookie-parser');
+let session = require('express-session');
+let crypto = require('crypto');
+
 let responseJSON = function (res, ret) {
   if (typeof ret === 'undefined') {
     res.json({
@@ -16,6 +20,11 @@ let responseJSON = function (res, ret) {
   } else {
     res.json(ret);
   }
+}
+
+function md5(orders) {
+  var md5 = crypto.createHash('md5');
+  return md5.update(orders).digest('hex');
 }
 
 const MAX_DISH = 16;
@@ -103,7 +112,33 @@ let query = async function (req, res, next) {
     });
   })
 
-  res.json({data:orders});
+  //显示的订单数量
+  let box_number = 0;
+  orders.forEach(order => {
+    box_number += parseInt(order.infos.length / MAX_DISH);
+  })
+
+  while (--box_number) {
+    orders.pop();
+  }
+
+  //对比缓存
+  if (req.session.orders) {
+    let encode_cache = md5(JSON.stringify(req.session.orders));
+    let encode_orders = md5(JSON.stringify(orders));
+    if (encode_cache != encode_orders) {
+      let cache_orders = req.session.orders;
+      req.session.orders = orders;
+
+      cache_orders.forEach(cache=>{
+        console.log(cache);
+      })
+    }
+  }else{
+    req.session.orders = orders;
+  }
+
+  res.json({ data: orders });
 }
 
 /* GET users listing. */
