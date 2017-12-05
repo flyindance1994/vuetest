@@ -11,6 +11,8 @@
     "crypto": "^1.0.1",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "forever": "^0.15.3",
+    "moment": "^2.19.3",
     "morgan": "~1.8.1",
     "mysql": "latest",
     "pug": "latest",
